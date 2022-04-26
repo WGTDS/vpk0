@@ -1,0 +1,175 @@
+#####################################################################
+
+    HALKEN vpk0
+    v0.75
+
+    "White Guy That Don't Smile"
+    2022/04/25, Monday, April 25th; 2042 HOURS
+
+#####################################################################
+
+Preface:
+
+    From: "Pokémon Snap (USA)"
+          and
+          "NINTENDO Game Boy Advance SDK 3.0/bin/agbcomp.exe"
+          and
+          "nvpktool_src/nvpktool.cpp"
+
+    "vpk0" decoding functionality was recovered through the act
+    of decompiling the Nintendo 64 title, "Pokémon Snap",
+    using "Ghidra", a reverse software engineering suite.
+
+    Lempel-Ziv encoding functionality was based upon the routine
+    recovered from "agbcomp.exe" using the aforementioned tool,
+    "Ghidra", in addition to, "Snowman", an x86 decompiler.
+
+    The bit-stream routine used in the encoding process draws
+    significant reference from "nvpktool" by "CaitSith2",
+    however, customizable functionality present in their
+    source code will not be implemented as it is not within
+    the scope for the goal of this project.
+
+#####################################################################
+
+Description:
+
+    This is a tool that handles HAL's "vpk0" data format.
+
+    It's still a work in progress, however, it is a
+    functional program.
+
+    * Can decode vpk0 data; both type 0x00 and type 0x01.
+    * Encodes data to a bit-stream LZ format that's supported
+      by the decoding routine.
+
+#####################################################################
+
+Instructions:
+
+    I used GCC to build this on 64-bit Linux, Mac, and Windows,
+    and have provided a Makefile that may serve as a convenience.
+
+Ensure the following subdirectories exist within the path "vpk0":
+"bin"
+"include"
+"obj"
+"src"
+_____________________________________________________________________
+Confirm the following files are present within these subdirectories:
+"vpk0"
+    "include"
+        "vpk0.h"
+    "src"
+        "decode.c"
+        "encode.c"
+        "lz.c"
+        "utils.c"
+        "vpk0.c"
+    "LICENSE"
+    "Makefile"
+    "README"
+_____________________________________________________________________
+"cd" into the work directory that is "vpk0" and type "make".
+
+The "make" command will build "vpk0".
+
+The "make clean" command will remove all files from the
+"bin" and "obj" subdirectories.
+_____________________________________________________________________
+
+Interface:
+
+"vpk0.h" is required! Inspect its contents.
+
+"decode.c" : decoding routine for vpk0 encoded data.
+
+"encode.c" : encoding routine for generating vpk0 data.
+
+"lz.c" contains the required search routine for LZ encoding.
+
+"utils.c" contain byte-swapping functions for 16 and 32-bit data.
+It should be noted that vpk0 data is big-endian, therefore, the
+facilities provided regard little-endian host systems.
+
+"vpk0.c" contains the "main()" function and will compile into the
+executable needed to process the data defined by this software.
+
+#####################################################################
+
+Motive:
+
+    Nearly 20 years ago, an individual under the alias "CaitSith2"
+    successfully reverse-engineered the vpk0 format used by the
+    Nintendo e-Reader for the Game Boy Advance.
+
+    This development is certainly no small feat, however, some
+    individuals are curious as to whether or not they themselves
+    can <fully> reverse-engineer the format, myself included,
+    focusing on 1:1 accuracy.
+
+    As of February 2022, only the LZ portion of the format has
+    been replicated. The Huffman format has yet to be cracked.
+
+#####################################################################
+
+Special Mentions:
+
+    HAL Laboratory:
+        Japan's IBM, to say the least.
+        Their vpk0 format keeps me up at night knowing I may never
+        be able to deduce their Huffman method....
+
+    CaitSith2:
+        Big Brain behind the e-Reader homebrew tools.
+        (After comparing your code with what was reproduced via
+         Ghidra using a dumped e-Reader ROM for reference, the
+         similarities are borderline identical despite the
+         15 year gap. Tee-hee.)
+
+    tehzz:
+        Recognized for also expressing interest in fully
+        reverse-engineering HAL's intriguing rendition of the
+        Deflate algorithm.
+
+#####################################################################
+
+    Q: "How did you come across the vpk0 decoding routine in a
+        Nintendo 64 title?"
+    A: Ghidra.
+       It appears that each HAL N64 ROM that I've inspected has
+       four separate similar routines.
+       Kirby 64: The Crystal Shards[*]
+       Pokémon Snap
+       Shigesato Itoi's No. 1 Bass Fishing - Definitive Edition!
+       Super Smash Bros.
+       [*]Routines are present, yet there's no convenient unique
+       identifiers within the ROM for identifying encoded blocks.
+
+    Q: "Why is this tool so slow?"
+    A: I am a cheese brain.
+       I find ways to make things work, but that doesn't
+       mean I'll devise the fastest method possible. Ooga Booga.
+       The culprit is the LZ routine from the "agbcomp" tool.
+       It doesn't help that it was slow to begin with, nevertheless,
+       the measures for adhering to "vpk0" LZ compliance slowed
+       things down even further.
+
+    Q: "Is this, by any chance, competition between CaitSith2
+        and/or tehzz...?"
+    A: Nope. Just doing this for the sake of things.
+       Probably won't reach my goal, but it's whatever.
+
+    Q: "Why waste time on this format when the homebrew community
+        will use gzip/zlib anyway?"
+    A: HAL piqued my interest when I noted that, under most
+       circumstances, their format is well within bounds for
+       being a competitor to gzip's fastest encoding setting.
+       However, gzip's ultra setting completely obliterates it.
+       Furthermore, they opted with their strange format over
+       gzip's capabilities, and that is enough to question "why?".
+       It's not even a special case scenario like Nintendo EAD's
+       SLI format being more efficient than the LZSS algorithm
+       used by... everyone else.
+
+#####################################################################
