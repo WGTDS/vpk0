@@ -1,0 +1,88 @@
+
+    Nintendo 64,
+    Super Smash Brothers [NALE]
+
+    Size:       16777216 bytes (16 MiB)
+    CRC32:      EB97929E
+    CRC64:      ED6C247C3AFA2E52
+    SHA256:     15592E79D3C5295CEF4371D4992F0BD25BEC2102FC29644C93E682F7EA99EF3D
+    SHA1:       E2929E10FCCC0AA84E5776227E798ABC07CEDABF
+    BLAKE2sp:   6FE814641A12E42AAEFEE8E15452BDD4E641479F1C45FD8DECE55147BEA85B7E
+
+vpk0 Segment Offset:
+
+    0x4421AE, Sample Mode = 0 [ Single ]
+
+Header:
+
+    Offsets: 0{1},0{5},1,1
+    Lengths: 0{4},1
+
+Breadth Frequency Structure:
+
+Group "A":
+    Reflects the Header.
+    Represents sum of current and preceding breadth frequency values
+    (observe Group "B") after the last defined sum.
+
+Group "B":
+    Represents the frequency of the coinciding breadth.
+
+Group "C":
+    Represents the number of unique breadth group values.
+    e.g. A Breadth of 3 can be the values of 0x4, 0x5, 0x6, 0x7.
+    If there are occurrences of 0x4, 0x5, 0x7, but not 0x6,
+    there are three unique occurrences belonging to the breadth.
+
+##  Offset Breadth Frequencies
+
+          A    B    C
+    -----------------
+    [ 0]: 0 -> 0 -> 0
+    [ 1]: 2 -> 2 -> 1
+    [ 2]: 0 -> 0 -> 0
+    [ 3]: 0 -> 1 -> 1
+    [ 4]: 0 -> 3 -> 1
+    [ 5]: 5 -> 1 -> 1
+    [ 6]: 0 -> 0 -> 0
+    [ 7]: 0 -> 0 -> 0
+    [ 8]: 0 -> 0 -> 0
+    [ 9]: 0 -> 0 -> 0
+    [10]: 0 -> 0 -> 0
+    [11]: 0 -> 0 -> 0
+    [12]: 0 -> 0 -> 0
+    [13]: 0 -> 0 -> 0
+    [14]: 0 -> 0 -> 0
+    [15]: 0 -> 0 -> 0
+    [16]: 0 -> 0 -> 0
+
+    Offset Breadth Frequency Tree
+
+      6
+    ┌─┴─┐
+    1   5
+
+    0 ==> 1
+    1 ==> 5
+
+##  Length Breadth Frequencies
+
+         A    B    C
+    ----------------
+    [0]: 0 -> 0 -> 0
+    [1]: 0 -> 0 -> 0
+    [2]: 0 -> 2 -> 1
+    [3]: 0 -> 4 -> 3
+    [4]: 7 -> 1 -> 1
+    [5]: 0 -> 0 -> 0
+    [6]: 0 -> 0 -> 0
+    [7]: 0 -> 0 -> 0
+    [8]: 0 -> 0 -> 0
+
+    Length Breadth Frequency Tree
+
+      4
+    ┌─┴─┐
+    4
+
+      0 ==> 4
