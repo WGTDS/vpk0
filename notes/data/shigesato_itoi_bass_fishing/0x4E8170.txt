@@ -1,0 +1,99 @@
+
+    Nintendo 64,
+    Itoi Shigesato no Bass Tsuri No. 1 Kettei Ban! [NIBJ]
+
+    Size:       16777216 bytes (16 MiB)
+    CRC32:      576915D4
+    CRC64:      8598334B2F923720
+    SHA256:     E7FDA3937EF0B59775CA5CABA9DF750D7BA67A85722A175870A3F42BA0799AF8
+    SHA1:       C722BA7FD7C44FEE474233DB3FD251177A83A9AB
+    BLAKE2sp:   B0279DD311F607A8194B0AF6230DFE82379A8BE9225399B347A0F95B1172C514
+
+vpk0 Segment Offset:
+
+    0x4E8170, Sample Mode = 0 [ Single ]
+
+Header:
+
+    Offsets: 0{8},0{11},10{14},0{16},1,1,1
+    Lengths: 0{3},0{4},0{6},0{8},1,1,1,1
+
+Breadth Frequency Structure:
+
+Group "A":
+    Reflects the Header.
+    Represents sum of current and preceding breadth frequency values
+    (observe Group "B") after the last defined sum.
+
+Group "B":
+    Represents the frequency of the coinciding breadth.
+
+Group "C":
+    Represents the number of unique breadth group values.
+    e.g. A Breadth of 3 can be the values of 0x4, 0x5, 0x6, 0x7.
+    If there are occurrences of 0x4, 0x5, 0x7, but not 0x6,
+    there are three unique occurrences belonging to the breadth.
+
+##  Offset Breadth Frequencies
+
+               A         B         C
+    --------------------------------
+    [ 0]:      0 ->      0 ->      0
+    [ 1]:      2 ->  1,092 ->      1
+    [ 2]:      0 ->    462 ->      2
+    [ 3]:      0 ->    729 ->      4
+    [ 4]:      0 ->    847 ->      8
+    [ 5]:      5 ->    886 ->     16
+    [ 6]:      0 ->  3,460 ->     32
+    [ 7]:      0 ->  6,438 ->     64
+    [ 8]: 20,919 ->  7,005 ->    128
+    [ 9]:      0 ->  7,500 ->    256
+    [10]:      0 ->  8,505 ->    512
+    [11]: 25,823 ->  9,818 ->  1,024
+    [12]:      0 -> 10,881 ->  2,025
+    [13]:      0 -> 13,442 ->  3,887
+    [14]: 52,179 -> 27,856 ->  7,750
+    [15]:      0 -> 23,766 -> 12,198
+    [16]: 48,237 -> 24,471 -> 16,646
+
+    Offset Breadth Frequency Tree
+
+          49
+      ┌───┴───┐
+      19      30
+    ┌─┴─┐   ┌─┴─┐
+    8   11  14  16
+
+    00 ==> 8
+    01 ==> 11
+    10 ==> 14
+    11 ==> 16
+
+##  Length Breadth Frequencies
+
+               A         B     C
+    ----------------------------
+    [0]:       0 ->      0 ->  0
+    [1]:       0 ->      0 ->  0
+    [2]:       0 -> 66,179 ->  1
+    [3]: 137,571 -> 71,392 ->  4
+    [4]:   8,076 ->  8,076 ->  8
+    [5]:       0 ->    684 -> 16
+    [6]:   1,334 ->    650 -> 32
+    [7]:       0 ->     97 -> 47
+    [8]:     177 ->     80 -> 30
+
+    Length Breadth Frequency Tree
+
+       21
+    ┌──┴──┐
+    │     18
+    │  ┌──┴──┐
+    │  │     14
+    │  │   ┌─┴─┐
+    3  4   6   8
+
+      0 ==> 3
+     10 ==> 4
+    110 ==> 6
+    111 ==> 8
