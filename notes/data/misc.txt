@@ -1,0 +1,134 @@
+Miscellaneous notes, thoughts, observations, etc...
+
+
+****************************************************************
+$   What does "vpk0" stand for???
+$   Would HAL's N64 titles contain an encoding routine?
+$   How to locate traces of "vpk0" decoding routines within
+    a (Ghidra+N64 Loader) decompiled Nintendo 64 ROM's C code.
+$   What is Type 0x00 and 0x01? (Header Byte @ 0x08)
+$   Does the format live on in other platforms' titles?
+
+
+________________________________________________________________
+$   What does "vpk0" stand for???
+
+
+The "vpk" in "vpk0" is likely an acronym for the Hepburn of
+"Vu~ariaburu Purefikkusu Koudo" (Variable Prefix Code_s).
+
+The "0" could either be one of three things:
+
+1.) Target designating cartridge (0) -or- 64 disk drive (1).
+    (This is speculative and dubious at best as, to this day,
+     the individual(s) who've made/supported the claim that a
+     "0" or "1" appended to the end of a FourCC is a target
+     indicator have yet to provide evidence.
+     Furthermore, observing SLI data (Yaz0) in GameCube, Wii,
+     3DS, and Wii-U titles retain the "0" despite the host
+     system being a disk-based unit.)
+2.) Indicator that their LZ[SS?] routine was initialized with
+    NULL (0x00) characters since it's binary data, and not
+    the traditional method of initializing the buffer with
+    the most frequent characters in text, Space (0x20).
+3.) Padding to align the FourCC to a 32-bit value.
+
+
+________________________________________________________________
+$   Would HAL's N64 titles contain an encoding routine?
+
+
+After observing the fact Nintendo's Mario Kart 64 contains an
+encoder for the particular SLI format revision, "MIO0", it begs
+the question of, whether or not, one (or all) of HAL's titles
+contain a method for compressing data to "vpk0".
+
+However, the reason for including an encoding routine would have
+to be justifiably plausible. For example, save data.
+
+While Nintendo's justification for including an encoding routine
+in MK64 is unknown, the game has not only generic save data,
+but also ghost information as well.
+
+
+________________________________________________________________
+$   How to locate traces of "vpk0" decoding routines within
+    a (Ghidra+N64 Loader) decompiled Nintendo 64 ROM's C code.
+
+
+There's a number of telltale signs that there's a "vpk0"
+decoding routine present within C code, but the most prominent
+method in a text editor with sufficient regex searching
+capabilities is to look for [* -4 -].
+< Read: Times Negative Four Minus. >
+
+Another approach is to look for [< 3) {].
+< Read: ... if (... Less Than 3) { ... >
+
+Both approaches coincide with the Offset Retrieval portion of
+the decoding routine.
+
+
+________________________________________________________________
+$   What is Type 0x00 and 0x01? (Header Byte @ 0x08)
+
+
+These types indicate the Sample Mode used for handling Offset
+data, exclusively.
+
+Type 0: No special arithmetic performed on Offset values.
+Type 1: divide = (offset + 8) / 4
+        modulo = offset % 4
+        If modulo is non-zero, (modulo - 1) is stored with its
+        corresponding prefix code.
+        Then the divide value is stored as-is, regardless.
+        It's just in the instance of a non-zero modulo, the
+        decremented remainder must be stored prior.
+
+Not sure if their encoder required manual input or the process
+was automatic regarding the use of Type 1.
+Furthermore, given the nature of such a calculation, it leads
+to speculation that Type 1 data has a special application to
+some degree.
+However, every instance of "vpk0" data in Pokémon Snap is
+encoded as a Type 1, and the only instance of encoded data in
+Shigesato Itoi's Bass Fishing is of Type 0.
+Additionally, the data from e-Reader cards are mostly encoded
+with Type 0.
+
+
+________________________________________________________________
+$   Does the format live on in other platforms' titles?
+
+After reviewing the modus operandi that is Nintendo EAD's SLI
+compression format and its persisted usage in their titles to
+this present day (latest I am aware of is Splatoon and BotW),
+it is not entirely surprising to see a lack of "vpk0" data in
+modern titles after the Game Boy Advance was discontinued.
+
+Nintendo EAD's engineering initiative was to use a format that
+was computationally efficient (i.e. minimal) for its application
+with graphics and matrices.
+The emphasis being real-time decompression.
+
+Comparing the decompiled ASM code for:
+The SLI decompression routine from Super Mario 64
+and
+A vpk0 decompression routine from Pokémon Snap
+- it is very much apparent that the latter is computationally
+far more expensive, especially, for the trivially marginal gain
+in space saved over SLI's Rev. 2 (Yay0/Yaz0).
+
+# 7.61% w/ NIBJ's [0] vpk0 volume @ 0x4E8170
+# Yaz0: 747,357
+# vpk0: 690,454
+
+# 1.02% w/ NALE's [0] vpk0 volume @ 0x2D475C
+# Yaz0: 89,543
+# vpk0: 87,614
+
+What vpk0 makes up for in space, SLI makes up for in speed.
+
+
+________________________________________________________________
+end of document
