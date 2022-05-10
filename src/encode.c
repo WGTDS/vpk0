@@ -25,10 +25,10 @@
  * For more information, please refer to <https://unlicense.org>
  ***************************************************************************/
  /*--------------------------------------------------------------------------
-    HALKEN vpk0 Tool ( Work in Progress ) v0.75
+    HALKEN vpk0 Tool ( Work in Progress ) v0.75.1
 
     Author  : White Guy That Don't Smile
-    Date    : 2022/04/25, Monday, April 25th; 2042 HOURS
+    Date    : 2022/05/09, Monday, May 9th; 2220 HOURS
     License : UnLicense | Public Domain
 
     This is a data compression tool presented with the goal of
@@ -103,6 +103,17 @@ static void _store_bits( u16 *buf, u32 *cursor,
 
 
 
+static u32 _get_breadth( u32 data )
+{
+  u32 breadth;
+
+  for ( breadth = 0; data > 0; breadth++ ) data >>= 1;
+
+  return breadth;
+}
+
+
+
 void encode( u8 *src, u8 **dst,
              const u32 isize, u32 *osize,
              const u32 sample_depth )
@@ -114,6 +125,9 @@ void encode( u8 *src, u8 **dst,
   u32  cursor = 0;
   u32  cursor_boundary = 0x1000U << ENC_GREED;
   u16 *bit_stream = (u16 *)calloc( cursor_boundary , sizeof(u16) );
+  u32  breadth;
+  u32  div;
+  u32  and;
 
 #define extend_buffer \
   if ( cursor == cursor_boundary ) \
@@ -138,11 +152,34 @@ void encode( u8 *src, u8 **dst,
   {
     u16 bit;
 
-    _store_bits( bit_stream, &cursor,  0, 1 );
+    /*_store_bits( bit_stream, &cursor,  0, 1 );
     _store_bits( bit_stream, &cursor, 16, 8 );
     _store_bits( bit_stream, &cursor,  1, 1 );
     _store_bits( bit_stream, &cursor,  0, 1 );
     _store_bits( bit_stream, &cursor,  8, 8 );
+    _store_bits( bit_stream, &cursor,  1, 1 );*/
+
+    _store_bits( bit_stream, &cursor,  0, 1 );
+    _store_bits( bit_stream, &cursor,  1, 8 );
+    _store_bits( bit_stream, &cursor,  0, 1 );
+    _store_bits( bit_stream, &cursor,  3, 8 );
+    _store_bits( bit_stream, &cursor,  0, 1 );
+    _store_bits( bit_stream, &cursor, 10, 8 );
+    _store_bits( bit_stream, &cursor,  0, 1 );
+    _store_bits( bit_stream, &cursor, 16, 8 );
+    _store_bits( bit_stream, &cursor,  1, 1 );
+    _store_bits( bit_stream, &cursor,  1, 1 );
+    _store_bits( bit_stream, &cursor,  1, 1 );
+    _store_bits( bit_stream, &cursor,  1, 1 );
+
+    _store_bits( bit_stream, &cursor,  0, 1 );
+    _store_bits( bit_stream, &cursor,  2, 8 );
+    _store_bits( bit_stream, &cursor,  0, 1 );
+    _store_bits( bit_stream, &cursor,  4, 8 );
+    _store_bits( bit_stream, &cursor,  0, 1 );
+    _store_bits( bit_stream, &cursor,  8, 8 );
+    _store_bits( bit_stream, &cursor,  1, 1 );
+    _store_bits( bit_stream, &cursor,  1, 1 );
     _store_bits( bit_stream, &cursor,  1, 1 );
 
     while ( lz_pos < *osize )
@@ -163,12 +200,89 @@ void encode( u8 *src, u8 **dst,
         {
           if ( !sample_depth )
           {
-            _store_bits( bit_stream, &cursor, *(u16 *)(*dst + lz_pos), 16 );
+            breadth = _get_breadth( (u32)*(u16 *)(*dst + lz_pos) );
+
+            if ( breadth <= 1 )
+            {
+              _store_bits( bit_stream, &cursor, (u16)0x0, 1 );
+              breadth = 1;
+            }
+            else if ( breadth <= 3 )
+            {
+              _store_bits( bit_stream, &cursor, (u16)0x2, 2 );
+              breadth = 3;
+            }
+            else if ( breadth <= 10 )
+            {
+              _store_bits( bit_stream, &cursor, (u16)0x6, 3 );
+              breadth = 10;
+            }
+            else
+            {
+              _store_bits( bit_stream, &cursor, (u16)0x7, 3 );
+              breadth = 16;
+            }
+
             extend_buffer;
+            _store_bits( bit_stream, &cursor, *(u16 *)(*dst + lz_pos), breadth );
+            extend_buffer;
+
+            /*_store_bits( bit_stream, &cursor, *(u16 *)(*dst + lz_pos), 16 );
+            extend_buffer;*/
           }
           else
           {
-            if ( (*(u16 *)(*dst + lz_pos) % 4) == 0 )
+            div = ((*(u16 *)(*dst + lz_pos) + 8) / 4);
+            and = (*(u16 *)(*dst + lz_pos) & 3);
+
+            if ( and )
+            {
+              breadth = _get_breadth( (and - 1) );
+
+              if ( breadth <= 1 )
+              {
+                _store_bits( bit_stream, &cursor, (u16)0x0, 1 );
+                breadth = 1;
+              }
+              else
+              {
+                _store_bits( bit_stream, &cursor, (u16)0x2, 2 );
+                breadth = 3;
+              }
+
+              extend_buffer;
+              _store_bits( bit_stream, &cursor, (u16)(and - 1), breadth );
+              extend_buffer;
+            }
+
+            breadth = _get_breadth( div );
+
+            if ( breadth <= 1 )
+            {
+              _store_bits( bit_stream, &cursor, (u16)0x0, 1 );
+              breadth = 1;
+            }
+            else if ( breadth <= 3 )
+            {
+              _store_bits( bit_stream, &cursor, (u16)0x2, 2 );
+              breadth = 3;
+            }
+            else if ( breadth <= 10 )
+            {
+              _store_bits( bit_stream, &cursor, (u16)0x6, 3 );
+              breadth = 10;
+            }
+            else
+            {
+              _store_bits( bit_stream, &cursor, (u16)0x7, 3 );
+              breadth = 16;
+            }
+
+            extend_buffer;
+            _store_bits( bit_stream, &cursor, (u16)div, breadth );
+            extend_buffer;
+
+            /*if ( (*(u16 *)(*dst + lz_pos) % 4) == 0 )
             {
               _store_bits( bit_stream,
                            &cursor,
@@ -188,12 +302,34 @@ void encode( u8 *src, u8 **dst,
                            (u16)((*(u16 *)(*dst + lz_pos) + 8) / 4),
                            16 );
               extend_buffer;
-            }
+            }*/
           }
 
           lz_pos += 2;
-          _store_bits( bit_stream, &cursor, (u16)*(*dst + lz_pos++), 8 );
+          breadth = _get_breadth( (u32)*(*dst + lz_pos) );
+
+          if ( breadth <= 2 )
+          {
+            _store_bits( bit_stream, &cursor, (u16)0x0, 1 );
+            breadth = 2;
+          }
+          else if ( breadth <= 4 )
+          {
+            _store_bits( bit_stream, &cursor, (u16)0x2, 2 );
+            breadth = 4;
+          }
+          else
+          {
+            _store_bits( bit_stream, &cursor, (u16)0x3, 2 );
+            breadth = 8;
+          }
+
           extend_buffer;
+          _store_bits( bit_stream, &cursor, (u16)*(*dst + lz_pos++), breadth );
+          extend_buffer;
+
+          /*_store_bits( bit_stream, &cursor, (u16)*(*dst + lz_pos++), 8 );
+          extend_buffer;*/
         }
         else
         {
