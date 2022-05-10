@@ -25,10 +25,10 @@
  * For more information, please refer to <https://unlicense.org>
  ***************************************************************************/
  /*--------------------------------------------------------------------------
-    HALKEN vpk0 Tool ( Work in Progress ) v0.75
+    HALKEN vpk0 Tool ( Work in Progress ) v0.75.1
 
     Author  : White Guy That Don't Smile
-    Date    : 2022/04/25, Monday, April 25th; 2042 HOURS
+    Date    : 2022/05/09, Monday, May 9th; 2220 HOURS
     License : UnLicense | Public Domain
 
     This is a data compression tool presented with the goal of
