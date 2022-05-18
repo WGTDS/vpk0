@@ -1,0 +1,59 @@
+.
+.   Changelog
+.   HAL ヴァリアブル プレフィックス コード 【 vpk 】
+.   Research Project
+.
+----------------------------------------------------------------
+@   ==  10 May 2022 [Private]  ==
+>   Inquisition Stage 3
+>   Attempted adjustment for functionality Options.
+    Failed formula for automating Sample Modes "0" and "1"
+    that would effectively reduce the func. opts. to
+    "e = encode" and "d = decode", as opposed to, manually
+    entering "s = single", "m = multiple", and "d = decode".
+?   Formula theorized the rationale that Mode "1" is
+    configured automatically when a percentage of Modulus 4'd
+    Offset values are met in proportion to other integral
+    data elements.
+----------------------------------------------------------------
+@   ==  9 May 2022 [Public]  ==
+>   Adjusted Encoding Routine to use arbitrary Prefix Codes,
+    temporarily.
+!   Condition: Orange
+    Original Project Incentive is compromised.
+----------------------------------------------------------------
+@   ==  3 May 2022 [Private]  ==
+>   Inquisition Stage 2
+>   Manual Alterations to Encoding Routine.
+>   Testing of Decoded Sample Data from Super Smash Bros.
+    Manually assigning the Tree Headers and Prefix Codes
+    for Offset and Length data that were recorded.
+----------------------------------------------------------------
+@   ==  25 April 2022 [Public]  ==
+#   Publicly Released "vpk0" Project under Version 0.75.
+!   Condition: Yellow
+    Authentic Decoding Routine.
+    Speculative/Experimental Encoding Routine.
+----------------------------------------------------------------
+@   ==  13 January 2022 [Public]  ==
+>   Tested the modified routine against 1,512 samples.
+!   Condition: Green
+    Modified LZ Routine is reproducing extracted LZ Data
+    with reliable consistency.
+#   Publicly Released Modified LZ Routine with Skeleton Code
+    as a separate repository "halkenlz" under Version 1.00.
+----------------------------------------------------------------
+@   ==  12 January 2022 [Private]  ==
+>   LZ Decoding Routine siphoned from "agbcomp.exe".
+    Modified to reproduce 1:1 identical HAL LZ binaries.
+----------------------------------------------------------------
+@   ==  26 December 2021 [Private]  ==
+>   Initial Format Inquisition.
+>   Decoding Routine siphoned from Pokémon Snap [NPFE].
+>   Borrowed CaitSith2's straightforward bitstream LZ
+    encoding methodology "nvpktool.exe -level 1", and using
+    the SLI LZ algorithm as a experimental component.
+----------------------------------------------------------------
+.
+.   [ end of document ]
+.
