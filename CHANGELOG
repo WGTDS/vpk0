@@ -4,6 +4,14 @@
 .   Research Project
 .
 ----------------------------------------------------------------
+@   ==  13 September 2022 [Public]  ==
+>   Tweaked the vector-like functions to remove a redundant
+    'feature' ( vsetbeg() ).
+>   Made some adjustments to the decoding routine for ease
+    of reading.
+>   The code is now roughly 15.79% faster than the
+    v0.75.2 release (30/06/2022).
+----------------------------------------------------------------
 @   ==  30 June 2022 [Public]  ==
 >   Consolidated code into one source file.
 >   Implemented vector-like functions, and adjusted code to
