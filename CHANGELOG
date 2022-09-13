@@ -9,6 +9,7 @@
     'feature' ( vsetbeg() ).
 >   Made some adjustments to the decoding routine for ease
     of reading.
+!   Code runs ~1.25% slower....
 ----------------------------------------------------------------
 @   ==  30 June 2022 [Public]  ==
 >   Consolidated code into one source file.
