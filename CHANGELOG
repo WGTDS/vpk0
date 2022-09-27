@@ -4,6 +4,14 @@
 .   Research Project
 .
 ----------------------------------------------------------------
+@   ==  26 September 2022 [Public]  ==
+>   Implemented vector-like macro substitutions for the
+    conventional functions.
+    Using the macros introduces an optimal performance gain
+    that yields a 21.31% increase in speed over the
+    v0.75.2 release (30/06/2022) with the compiler parameters
+    present within the makefile.
+----------------------------------------------------------------
 @   ==  13 September 2022 [Public]  ==
 >   Tweaked the vector-like functions to remove a redundant
     'feature' ( vsetbeg() ).
