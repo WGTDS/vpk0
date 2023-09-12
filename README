@@ -1,0 +1,75 @@
+#####################################################################
+
+    HALKEN vpk0 v0.75.5
+
+    "White Guy That Don't Smile"
+    2023/09/12, Tuesday, September 12th; 0715 HOURS
+
+#####################################################################
+
+Preface:
+
+    From: "Pokémon Snap (USA)"
+          and
+          "NINTENDO Game Boy Advance SDK 3.0/bin/agbcomp.exe"
+          and
+          "nvpktool_src/nvpktool.cpp"
+
+    "vpk0" decoding functionality was recovered through the act
+    of decompiling the Nintendo 64 title, "Pokémon Snap",
+    using "Ghidra", a reverse software engineering suite.
+
+    Lempel-Ziv encoding functionality was based upon the routine
+    recovered from "agbcomp.exe" using the aforementioned tool,
+    "Ghidra", in addition to, "Snowman", an x86 decompiler.
+
+    The bit-stream routine used in the encoding process draws
+    significant reference from "nvpktool" by "CaitSith2",
+    however, customizable functionality present in their
+    source code will not be implemented as it is not within
+    the scope for the goal of this project.
+
+#####################################################################
+
+Description:
+
+    This is a tool that handles HAL's "vpk0" data format.
+
+    It's still a work in progress, however, it is a
+    functional program.
+
+    * Can decode vpk0 data; both type 0x00 and type 0x01.
+    * Encodes data to a bit-stream LZ format that's supported
+      by the decoding routine.
+
+#####################################################################
+
+Compiler Flags:
+    -std=c99
+    -Wall
+    -Wextra
+    -Wpedantic
+    -Werror
+    -Os
+    -s
+
+    If compiling in a 64-bit environment, use the flags:
+    -Wno-int-to-pointer-cast
+    -Wno-pointer-to-int-cast
+
+#####################################################################
+
+Motive:
+
+    Nearly 20 years ago, an individual under the alias "CaitSith2"
+    successfully reverse-engineered the vpk0 format used by the
+    Nintendo e-Reader for the Game Boy Advance.
+
+    This development is certainly no small feat, however, some
+    individuals are curious as to whether or not they themselves
+    can <fully> reverse-engineer the format focusing on 1:1 accuracy.
+
+    As of February 2022, only the LZ portion of the format has
+    been replicated. The Huffman format has yet to be cracked.
+
+#####################################################################
