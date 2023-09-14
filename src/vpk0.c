@@ -24,7 +24,7 @@
  *
  * For more information, please refer to <https://unlicense.org>
  ***************************************************************************/
- /*--------------------------------------------------------------------------
+/*---------------------------------------------------------------------------
     HALKEN vpk0 Tool ( Indefinitely Incomplete, but Functional ) v0.75.5
 
     Author  : White Guy That Don't Smile
@@ -385,32 +385,30 @@ static void search(u8 *src, u8 *srcp, u8 *srcz, u32 *dict)
 {
     const u8 *head, *tail;
     u32 ld[2];
-    int nominal;
     u8 *window = ((srcp - src) < 0x10000U) ? &src[1] : &srcp[~0xFFFE];
     memset(dict, 0, (sizeof(u32) * 2));
     ld[0] = 1;
-    nominal = ((srcp < srcz) << 2) | 2;
-    nominal |= window <= srcp;
 
-    while (nominal == 7) {
-        nominal = 4;
-        tail = srcp - ld[0];
+    if ((srcp < srcz) && (window <= srcp)) {
+        do {
+            tail = srcp - ld[0];
 
-        if (*tail == *srcp) {
-            ld[1] = 1;
-            head = srcp;
+            if (*tail == *srcp) {
+                ld[1] = 1;
+                head = srcp;
 
-            while ((*++head == *++tail) && (++ld[1] < 0xFF));
+                while ((*++head == *++tail) && (++ld[1] < 0xFF));
 
-            if (srcz <= &srcp[ld[1]]) ld[1] = srcz - srcp;
+                if (srcz <= &srcp[ld[1]]) {
+                    ld[1] = srcz - srcp;
+                }
 
-            if ((2 < ld[1]) && (dict[1] < ld[1])) {
-                memcpy(dict, ld, (sizeof(u32) * 2));
+                if ((2 < ld[1]) && (dict[1] < ld[1])) {
+                    dict[0] = ld[0];
+                    dict[1] = ld[1];
+                }
             }
-        }
-
-        nominal |= ((++ld[0] < 0x10000U) << 1);
-        nominal |= ++window <= srcp;
+        } while ((++ld[0] < 0x10000U) && (++window <= srcp));
     }
 
     return;
